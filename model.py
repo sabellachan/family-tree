@@ -17,12 +17,18 @@ class Member(db.Model):
     eng_title = db.Column(db.String(20), nullable=True)
     viet_title = db.Column(db.String(10), nullable=True)
     alt_name = db.Column(db.String(50), nullable=True)
-    image = db.Column(db.String(80), nullable=True)
+    image_url = db.Column(db.String(80), nullable=True)
     parents = db.relationship('Member',
                               secondary=children,
                               primaryjoin=(children.c.child_id == id),
                               secondaryjoin=(children.c.parent_id == id),
                               backref=db.backref('children', lazy='dynamic'),
+                              lazy='dynamic')
+    spouse = db.relationship('Member',
+                              secondary=spouses,
+                              primaryjoin=(spouses.c.so1_id == id),
+                              secondaryjoin=(spouses.c.so2_id == id),
+                              backref=db.backref('spouses', lazy='dynamic'),
                               lazy='dynamic')
 
     # children = db.Table('children', db.Column('child_id', db.Integer, db.ForeignKey('member.id')))
@@ -31,6 +37,11 @@ class Member(db.Model):
                         db.Column('child_id', db.Integer, db.ForeignKey('member.id')),
                         db.Column('parent_id', db.Integer, db.ForeignKey('member.id'))
                         )
+
+    spouses = db.Table('spouses',
+                    db.Column('so1_id', db.Integer, db.ForeignKey('member.id')),
+                    db.Column('so2_id', db.Integer, db.ForeignKey('member.id'))
+                    )
 
     def __init__(self, data, parents=None, children=None):
         children = children or []
