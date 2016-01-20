@@ -1,6 +1,7 @@
 """Model file for Family Tree app."""
 
 from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 
 db = SQLAlchemy()
 
@@ -17,9 +18,19 @@ class Member(db.Model):
     viet_title = db.Column(db.String(10), nullable=True)
     alt_name = db.Column(db.String(50), nullable=True)
     image = db.Column(db.String(80), nullable=True)
+    parents = db.relationship('Member',
+                              secondary=children,
+                              primaryjoin=(children.c.child_id == id),
+                              secondaryjoin=(children.c.parent_id == id),
+                              backref=db.backref('children', lazy='dynamic'),
+                              lazy='dynamic')
 
-    # parents = should refer to other nodes
-    children = db.relationship("Member", backref="parents")
+    # children = db.Table('children', db.Column('child_id', db.Integer, db.ForeignKey('member.id')))
+
+    children = db.Table('children',
+                        db.Column('child_id', db.Integer, db.ForeignKey('member.id')),
+                        db.Column('parent_id', db.Integer, db.ForeignKey('member.id'))
+                        )
 
     def __init__(self, data, parents=None, children=None):
         children = children or []
