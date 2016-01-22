@@ -7,14 +7,14 @@ db = SQLAlchemy()
 
 # association table for parents<->children
 children = db.Table('children',
-                    db.Column('child_id', db.Integer, db.ForeignKey('member.id')),
-                    db.Column('parent_id', db.Integer, db.ForeignKey('member.id'))
+                    db.Column('child_id', db.Integer, db.ForeignKey('member.member_id')),
+                    db.Column('parent_id', db.Integer, db.ForeignKey('member.member_id'))
                     )
 
 # association table for spouses
 spouses = db.Table('spouses',
-                   db.Column('so1_id', db.Integer, db.ForeignKey('member.id')),
-                   db.Column('so2_id', db.Integer, db.ForeignKey('member.id'))
+                   db.Column('so1_id', db.Integer, db.ForeignKey('member.member_id')),
+                   db.Column('so2_id', db.Integer, db.ForeignKey('member.member_id'))
                    )
 
 
@@ -28,19 +28,19 @@ class Member(db.Model):
     last_name = db.Column(db.String(40), nullable=False)
     eng_title = db.Column(db.String(20), nullable=True)
     alt_name = db.Column(db.String(50), nullable=True)
-    lineage = db.Column(db.String(15), nullable=False)
+    lineage = db.Column(db.String(15), nullable=True)
     deceased = db.Column(db.Boolean, nullable=True)
     image_url = db.Column(db.String(80), nullable=True)
     parents = db.relationship('Member',
                               secondary=children,
-                              primaryjoin=(children.c.child_id == id),
-                              secondaryjoin=(children.c.parent_id == id),
+                              primaryjoin=(children.c.child_id == member_id),
+                              secondaryjoin=(children.c.parent_id == member_id),
                               backref=db.backref('children', lazy='dynamic'),
                               lazy='dynamic')
     spouse = db.relationship('Member',
                              secondary=spouses,
-                             primaryjoin=(spouses.c.so1_id == id),
-                             secondaryjoin=(spouses.c.so2_id == id),
+                             primaryjoin=(spouses.c.so1_id == member_id),
+                             secondaryjoin=(spouses.c.so2_id == member_id),
                              backref=db.backref('spouses', lazy='dynamic'),
                              lazy='dynamic')
 
