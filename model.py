@@ -1,4 +1,4 @@
-"""Model file for Family Tree app."""
+"""Model file for family tree app."""
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -7,14 +7,14 @@ db = SQLAlchemy()
 
 # association table for parents<->children
 children = db.Table('children',
-                    db.Column('child_id', db.Integer, db.ForeignKey('member.member_id')),
-                    db.Column('parent_id', db.Integer, db.ForeignKey('member.member_id'))
+                    db.Column('child_id', db.Integer, db.ForeignKey('members.member_id')),
+                    db.Column('parent_id', db.Integer, db.ForeignKey('members.member_id'))
                     )
 
 # association table for spouses
 spouses = db.Table('spouses',
-                   db.Column('so1_id', db.Integer, db.ForeignKey('member.member_id')),
-                   db.Column('so2_id', db.Integer, db.ForeignKey('member.member_id'))
+                   db.Column('so1_id', db.Integer, db.ForeignKey('members.member_id')),
+                   db.Column('so2_id', db.Integer, db.ForeignKey('members.member_id'))
                    )
 
 
