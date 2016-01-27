@@ -47,9 +47,9 @@ class Member(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Member member_id={} first_name={} last_name={}".format(self.member_id,
-                                                                        self.first_name,
-                                                                        self.last_name)
+        return "<Member member_id={} first_name={} last_name={}>".format(self.member_id,
+                                                                         self.first_name,
+                                                                         self.last_name)
 
 
 class User(db.Model):

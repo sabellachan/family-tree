@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <title>Family Tree</title>
+
+</head>
+
+<body>
+
+    <div class="welcome">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+              <p>{{ message }}</p>
+          {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+
+  {% block content %}CONTENT{% endblock %}
+  {% block footer %}
+    <div class="footer">
+      <p id="copyright">Copyright © 2016 | Jacqueline Huynh | All Rights Reserved</p>
+    </div>
+  {% endblock %}
+
+</body>
+</html>
